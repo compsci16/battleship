@@ -1,0 +1,105 @@
+@import "~normalize.css/normalize.css";
+@import url("https://fonts.googleapis.com/css2?family=Lacquer&display=swap");
+:root {
+  --blue-jeans: #35a7ffff;
+  --rich-black-fogra-39: #02020aff;
+  --red-salsa: #f93943ff;
+  --white: #ffffffff;
+  /* --block-color: #FFBA08; */
+  --block-color: rgb(246, 17, 28);
+}
+
+* {
+  /* border: 1px solid white; */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: var(--rich-black-fogra-39);
+  color: white;
+  font-size: 62.5%;
+  font-family: "Lacquer", cursive;
+}
+
+.container {
+  display: flex;
+}
+
+.container .board {
+  width: 50%;
+  padding: 0 5% 0 5%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container .board .title {
+  background-color: var(--red-salsa);
+  margin-bottom: 2%;
+  margin-top: 2%;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.8rem;
+  width: 40%;
+  align-self: center;
+  min-height: 8%;
+}
+
+.container .board .grid {
+  align-self: center;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  /* background-color: white; */
+  width: 80%;
+}
+
+.container .board .block {
+  background-color: var(--blue-jeans);
+  aspect-ratio: 1;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.container .board .block:hover {
+  background-color: rgba(53, 167, 255, 0.76);
+}
+
+.container .board .ship-yard {
+  width: 80%;
+  align-self: center;
+  margin-top: 3%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container .board .ship-yard .ship {
+  flex: 0 0 auto;
+  display: flex;
+  margin-left: 3%;
+  margin-top: 2%;
+}
+
+.container .board .ship-yard .ship .ship-block {
+  background-color: var(--block-color);
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  border: 2px solid black;
+}
+
+.ship-block-in-grid {
+  /* background-color: yellow !important;
+  border: 2px solid yellow !important;  */
+  border-radius: 0 !important;
+  background-color: var(--block-color) !important;
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  border: 2px solid black !important;
+}
+
+[draggable="true"] {
+  cursor: move;
+}
