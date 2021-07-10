@@ -1,4 +1,6 @@
-let draggedShip, draggedShipLength, shipshipBlockNumberDragged, gridNumber;
+let draggedShip, draggedShipLength, shipBlockNumberDragged, gridNumber;
+let shipsOfGrid1 = 0;
+let shipsOfGrid2 = 0;
 
 document.querySelectorAll(".ship").forEach((ship) => {
   ship.addEventListener("dragstart", handleDragStart);
@@ -30,6 +32,10 @@ function handleDragEnd(e) {
 }
 
 function handleBlockDrop(block) {
+  let shipNumber;
+  if (gridNumber == 1) shipNumber = ++shipsOfGrid1;
+  else if (gridNumber == 2) shipNumber = ++shipsOfGrid2;
+
   const blockNumber = parseInt(block.getAttribute("data-number"));
   let pos = blockNumber - shipBlockNumberDragged + 1;
   for (let i = 0; i < draggedShipLength; i++) {
@@ -37,9 +43,9 @@ function handleBlockDrop(block) {
       `.grid[data-id = '${gridNumber}'] .block[data-number =  '${pos}']`
     );
     block.classList.add("ship-block-in-grid");
+    block.setAttribute("shipNumber", shipNumber);
     pos++;
   }
-
   draggedShip.style.display = "none";
 }
 
@@ -69,3 +75,5 @@ function checkPosition(block) {
 
   return true;
 }
+
+export {shipsOfGrid1, shipsOfGrid2}; 

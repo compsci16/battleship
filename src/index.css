@@ -6,7 +6,8 @@
   --red-salsa: #f93943ff;
   --white: #ffffffff;
   /* --block-color: #FFBA08; */
-  --block-color: rgb(246, 17, 28);
+  /* --block-color: rgb(246, 17, 28); */
+  --block-color: rgba(9, 231, 9, 0.945);
 }
 
 * {
@@ -102,4 +103,32 @@ body {
 
 [draggable="true"] {
   cursor: move;
+}
+
+.grid[data-id="1"] .block[shipNumber="1"]:last-of-type {
+  background-color: black !important;
+}
+
+.attacked-ship {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 200%;
+  background-color: black !important;
+}
+
+.bad-attack {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 200%;
+  background-color: black !important;
+}
+
+/* grid 2 should be hidden */
+.grid[data-id="2"] .ship-block-in-grid {
+  background-color: var(--blue-jeans) !important;
+}
+.grid[data-id="2"] .attacked-ship {
+  background-color: black !important;
 }
