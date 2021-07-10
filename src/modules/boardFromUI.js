@@ -3,7 +3,7 @@ import Gameboard from "./Gameboard";
 import Ship from "./Ship";
 
 let board1, board2;
-const numberOfShips = 5;
+const numberOfShips = 1;
 
 
 document.addEventListener("dragend", () => {

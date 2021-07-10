@@ -1,5 +1,6 @@
 import Player from "./Player";
 import { board1, board2 } from "./boardFromUI";
+import AI from "./AI";
 
 document.addEventListener("dragend", () => {
   if (board1 && board2) {
@@ -12,8 +13,8 @@ let currentPlayerIndex;
 
 function startGame() {
   console.log("Start !");
-  player1 = new Player("player1", board1, board2);
-  player2 = new Player("player2", board2, board1);
+  player1 = new Player("player1", board1, board2, "human");
+  player2 = new AI("player2", board2, board1, "AI");
   currentPlayer = player1;
   currentPlayerIndex = 1;
   document.querySelectorAll(".block").forEach((block) => {
@@ -24,9 +25,13 @@ function startGame() {
 function blockClickHandler(e) {
   const block = e.target;
   const gridNumber = parseInt(block.parentElement.getAttribute("data-id"));
-
+ 
   // player can't attack its own grid
   if (gridNumber === currentPlayerIndex) return;
+
+  const x = parseInt(block.getAttribute("data-row")) - 1;
+  const y = parseInt(block.getAttribute("data-column")) - 1;
+  currentPlayer.attack(x, y);
 
   // is it a ship block in the grid
   if (block.matches(".ship-block-in-grid")) {
@@ -36,7 +41,7 @@ function blockClickHandler(e) {
     currentPlayerUpdate(); // update only in this case...
     // ...because the player should get another chance in case of successful ship attack
   }
-
+  if (currentPlayer.type === "AI") currentPlayer.play();
   block.removeEventListener("click", blockClickHandler);
 }
 
@@ -46,15 +51,12 @@ function gridBlockClickHandler(gridBlock) {
 }
 
 function shipBlockClickHandler(shipBlock) {
-  const x = parseInt(shipBlock.getAttribute("data-row")) - 1;
-  const y = parseInt(shipBlock.getAttribute("data-column")) - 1;
+  
 
   // 1. Mark the ship block as attacked
   shipBlock.classList.add("attacked-ship");
   shipBlock.innerHTML = `💥`;
 
-  // 1.1 Map it to the abstract board
-  currentPlayer.attack(x, y);
 
   if (isGameOver()) {
     alert(whoWon().name); // if it is, print the winner
