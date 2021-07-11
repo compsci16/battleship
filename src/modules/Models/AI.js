@@ -5,11 +5,13 @@ import Application from '../Controllers/Application';
 export default class AI extends Player {
     #nextY;
     #nextX;
+    #orientations;
     constructor(name, ownBoard, oppBoard) {
         super(name, ownBoard, oppBoard);
         this.attackedBlocks = [];
         this.#nextY = null;
         this.#nextX = null;
+        this.#orientations = { 0: 'horizontal', 1: 'vertical' };
     }
 
     placeShips() {
@@ -17,7 +19,8 @@ export default class AI extends Player {
     }
 
     #addShipToBoard(length) {
-        const ship = new Ship(length);
+        let orientation = this.#orientations[this.#getRandomInt(0, 2)];
+        const ship = new Ship(length, orientation);
         try {
             const [x, y] = this.#getRandomCoords();
             this.ownBoard.placeShip(ship, x, y);
@@ -62,15 +65,17 @@ export default class AI extends Player {
         }
         block.click();
     }
+
     #getRandomCoords() {
         const x = this.#getRandomInt(0, 10);
         const y = this.#getRandomInt(0, 10);
         return [x, y];
     }
+
     #getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+        return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
     }
 
     #hunt() {}
