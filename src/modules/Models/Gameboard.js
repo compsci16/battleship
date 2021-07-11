@@ -17,29 +17,28 @@ export default class Gameboard {
     return mat;
   }
 
-
   /**
    * @param {Ship} ship to be placed
    * @param {int} x starting x coordinate of ship placement
    * @param {int} y starting y coordinate of ship placement
    */
   placeShip(ship, x, y) {
-      if (this.isValidCoord(ship, x, y)) {
-        for (let i = 0; i < ship.length; i++) {
-          this.grid[x][y]["ship"] = ship;
-          this.grid[x][y]["index"] = i;
-          y++; //move to next column for next tile placement
-        }
-        this.shipCount++;
+    if (this.isValidCoord(ship, x, y)) {
+      for (let i = 0; i < ship.length; i++) {
+        this.grid[x][y]["ship"] = ship;
+        this.grid[x][y]["index"] = i;
+        y++; //move to next column for next tile placement
       }
+      this.shipCount++;
+    }
   }
 
   isValidCoord(ship, x, y) {
-    if (x < 0 || y > this.size || x > this.size) throw "invalid index";
-    if (ship.length > this.size) throw "too long ship";
-    if (this.size - y < ship.length) throw "wrong position for ship";
+    if (x < 0 || y < 0 || y > this.size || x > this.size) throw new Error("invalid index");
+    if (ship.length > this.size) throw new Error( "too long ship");
+    if (this.size - y < ship.length) throw new Error( "wrong position for ship");
     for (let i = 0; i < ship.length; i++) {
-      if (this.grid[x][y + i]["ship"]) throw "another ship already here";
+      if (this.grid[x][y + i]["ship"]) throw new Error("another ship already here");
     }
     return true;
   }

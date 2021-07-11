@@ -15,6 +15,7 @@ export default function letHumanDragShips(boardHuman) {
 function handleDragStart(e) {
   this.style.opacity = "0.4";
   draggedShip = e.target;
+  if (!draggedShip.matches(".ship")) return;
   draggedShipLength = draggedShip.childElementCount;
   const rect = draggedShip.getBoundingClientRect();
   const blockWidth = rect.width / draggedShipLength;
@@ -28,32 +29,32 @@ function handleDragEnd(e, boardHuman) {
   // if it's a block in the right grid
   if (elem[0].matches(`.grid[data-id = '1'] .block`)) {
     const block = elem[0];
-    const index = block.getAttribute("data-number");
+    const row = block.getAttribute("data-row");
+    const column = block.getAttribute("data-column");
     const startingBlock = document.querySelector(
-      `.grid[data-id = '1'] .block[data-number = '${
-        index - shipBlockNumberDragged + 1
+      `.grid[data-id = '1'] .block[data-row = '${row}'][data-column = '${
+        column - shipBlockNumberDragged + 1
       }']`
     );
-    console.log(startingBlock);
     if (!startingBlock) {
-        e.target.style.opacity = 1;
-        return;
+      restoreOpacity(e);
+      return;
     }
     const x = startingBlock.getAttribute("data-row");
     const y = startingBlock.getAttribute("data-column");
 
     const ship = new Ship(draggedShipLength);
-
     try {
       boardHuman.placeShip(ship, x - 1, y - 1); // x-1,y-1 because UI: 1,2,... -> logic:0,1,...\
       ++Application.shipsOfGrid1;
       paintShipOnGrid(parseInt(startingBlock.getAttribute("data-number")));
       draggedShip.style.display = "none";
-    } catch (e) {
-      console.log(e.message);
-      e.target.style.opacity = 1;
+      return;
+    } catch (err) {
+      console.log(err.message);
+      restoreOpacity(e);
     }
-  } else e.target.style.opacity = 1;
+  } else restoreOpacity(e);
 }
 
 function paintShipOnGrid(index) {
@@ -63,4 +64,8 @@ function paintShipOnGrid(index) {
     );
     currentBlock.classList.add("ship-block-in-grid");
   }
+}
+
+function restoreOpacity(e) {
+  e.target.style.opacity = 1;
 }
