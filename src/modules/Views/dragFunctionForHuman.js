@@ -28,8 +28,8 @@ function handleDragStart(e) {
         const blockWidth = rect.width / draggedShipLength;
         shipBlockNumberDragged = Math.floor(e.offsetX / blockWidth + 1);
     } else if (draggedShipDirection === 'column') {
-        const blockWidth = rect.height / draggedShipLength;
-        shipBlockNumberDragged = Math.floor(e.offsetY / blockWidth + 1);
+        const blockHeight = rect.height / draggedShipLength;
+        shipBlockNumberDragged = Math.floor(e.offsetY / blockHeight + 1);
     }
 }
 
