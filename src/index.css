@@ -26,18 +26,23 @@ body {
 .container {
   display: flex;
 }
+.container .status{
+  align-self: center;
+  padding-bottom: 5%;;
+  font-size: 3rem;
+}
 
 .container .board {
   width: 50%;
-  padding: 0 5% 0 5%;
+  margin: 0 2% 0 2%;
   display: flex;
   flex-direction: column;
 }
 
 .container .board .title {
   background-color: var(--red-salsa);
-  margin-bottom: 2%;
-  margin-top: 2%;
+  margin-bottom: 1%;
+  margin-top: 1%;
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -46,7 +51,7 @@ body {
   font-size: 1.8rem;
   width: 40%;
   align-self: center;
-  min-height: 8%;
+  min-height: 5%;
 }
 
 .container .board .grid {
@@ -125,10 +130,7 @@ body {
   background-color: black !important;
 }
 
-/* grid 2 should be hidden */
-.grid[data-id="2"] .ship-block-in-grid {
+.ai-ship {
   background-color: var(--blue-jeans) !important;
 }
-.grid[data-id="2"] .attacked-ship {
-  background-color: black !important;
-}
+

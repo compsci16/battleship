@@ -1,2 +1,2 @@
 import './index.css';
-import './modules/dependencies';
+import './modules/Controllers/Game';

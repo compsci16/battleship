@@ -1,9 +1,8 @@
 export default class Gameboard {
-  #shipCount;
   constructor(size) {
     this.size = size;
     this.grid = this.#createMatrix(size);
-    this.#shipCount = 0;
+    this.shipCount = 0;
   }
 
   #createMatrix(size) {
@@ -18,20 +17,31 @@ export default class Gameboard {
     return mat;
   }
 
+
   /**
    * @param {Ship} ship to be placed
    * @param {int} x starting x coordinate of ship placement
    * @param {int} y starting y coordinate of ship placement
    */
   placeShip(ship, x, y) {
+      if (this.isValidCoord(ship, x, y)) {
+        for (let i = 0; i < ship.length; i++) {
+          this.grid[x][y]["ship"] = ship;
+          this.grid[x][y]["index"] = i;
+          y++; //move to next column for next tile placement
+        }
+        this.shipCount++;
+      }
+  }
+
+  isValidCoord(ship, x, y) {
+    if (x < 0 || y > this.size || x > this.size) throw "invalid index";
     if (ship.length > this.size) throw "too long ship";
     if (this.size - y < ship.length) throw "wrong position for ship";
     for (let i = 0; i < ship.length; i++) {
-      this.grid[x][y]["ship"] = ship;
-      this.grid[x][y]["index"] = i;
-      y++; //move to next column for next tile placement
+      if (this.grid[x][y + i]["ship"]) throw "another ship already here";
     }
-    this.#shipCount++;
+    return true;
   }
 
   receiveAttack(x, y) {
@@ -44,7 +54,7 @@ export default class Gameboard {
   }
 
   haveAllSunk() {
-    if (this.#shipCount === 0) throw new Error("No ships");
+    if (this.shipCount === 0) throw new Error("No ships");
     const grid = this.grid;
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid[0].length; j++) {

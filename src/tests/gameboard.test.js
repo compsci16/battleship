@@ -1,5 +1,5 @@
-import Gameboard from "../modules/Gameboard";
-import Ship from "../modules/Ship";
+import Gameboard from "../modules/Models/Gameboard";
+import Ship from "../modules/Models/Ship";
 
 describe("gameboard", () => {
   const defaultObj = { ship: null, attacked: false, index: -1 };
@@ -36,6 +36,10 @@ describe("gameboard", () => {
       "wrong position"
     );
 
+    const gameboard3 = new Gameboard(10);
+    expect(() => gameboard3.placeShip(ship2, 0, 8)).toThrowError(
+      "wrong position"
+    );
   });
 
   it("places ships", () => {
@@ -50,6 +54,15 @@ describe("gameboard", () => {
       ],
       [defaultObj, defaultObj],
     ]);
+  });
+
+  it("cannot place another ship at used position", () => {
+    const gameboard = new Gameboard(10);
+    const ship = new Ship(8);
+    gameboard.placeShip(ship, 0, 0);
+    expect(() => gameboard.placeShip(ship, 0, 0)).toThrowError(
+      "ship already here"
+    );
   });
 
   it("receives Attack", () => {
@@ -110,5 +123,17 @@ describe("gameboard", () => {
     expect(gameboard.haveAllSunk()).toBe(false);
     gameboard.receiveAttack(0, 0);
     expect(gameboard.haveAllSunk()).toBe(true);
+  });
+
+  it("can check if there's space for other ships", () => {
+    const gameboard = new Gameboard(5);
+    const ship1 = new Ship(2);
+    const ship2 = new Ship(3);
+    gameboard.placeShip(ship1, 0, 3);
+    expect(() => gameboard.placeShip(ship2, 0, 2)).toThrowError();
+    expect(() => gameboard.placeShip(ship2, 0, 0)).not.toThrowError();
+    expect(() => gameboard.placeShip(ship2, 0, 1)).toThrowError();
+    expect(() => gameboard.placeShip(ship2, 0, 3)).toThrowError();
+    expect(() => gameboard.placeShip(ship2, 0, 5)).toThrowError();
   });
 });
