@@ -90,18 +90,24 @@ export default class Gameboard {
         }
     }
 
+    wasSuccessfullAttack(x, y) {
+        if (this.grid[x][y]['ship']) return true;
+        return false;
+    }
+
     haveAllSunk() {
         if (this.shipCount === 0) throw new Error('No ships');
         const grid = this.grid;
         for (let i = 0; i < grid.length; i++) {
             for (let j = 0; j < grid[0].length; j++) {
-                const ship = grid[i][j].ship;
+                const ship = grid[i][j]['ship'];
                 if (ship) {
                     if (!ship.isSunk()) {
                         return false;
                     } else {
-                        if (ship.orientation === 'horizontal') j += ship.length; //move ahead by ship's length to not check the same ship repeatedly
-                        if (ship.orientation === 'vertical') i += ship.length;
+                        // minor optimization:
+                        // move ahead by ship's length to not check the same horizontal ship repeatedly
+                        if (ship.orientation === 'horizontal') j += ship.length;
                     }
                 }
             }
