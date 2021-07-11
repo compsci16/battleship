@@ -1,136 +1,135 @@
-@import "~normalize.css/normalize.css";
-@import url("https://fonts.googleapis.com/css2?family=Lacquer&display=swap");
+@import '~normalize.css/normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Lacquer&display=swap');
 :root {
-  --blue-jeans: #35a7ffff;
-  --rich-black-fogra-39: #02020aff;
-  --red-salsa: #f93943ff;
-  --white: #ffffffff;
-  /* --block-color: #FFBA08; */
-  /* --block-color: rgb(246, 17, 28); */
-  --block-color: rgba(9, 231, 9, 0.945);
+    --blue-jeans: #35a7ffff;
+    --rich-black-fogra-39: #02020aff;
+    --red-salsa: #f93943ff;
+    --white: #ffffffff;
+    /* --block-color: #FFBA08; */
+    /* --block-color: rgb(246, 17, 28); */
+    --block-color: rgba(9, 231, 9, 0.945);
 }
 
 * {
-  /* border: 1px solid white; */
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    /* border: 1px solid white; */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 body {
-  background-color: var(--rich-black-fogra-39);
-  color: white;
-  font-size: 62.5%;
-  font-family: "Lacquer", cursive;
+    background-color: var(--rich-black-fogra-39);
+    color: white;
+    font-size: 62.5%;
+    font-family: 'Lacquer', cursive;
 }
 
 .container {
-  display: flex;
+    display: flex;
 }
-.container .status{
-  align-self: center;
-  padding-bottom: 5%;;
-  font-size: 3rem;
+.container .status {
+    align-self: center;
+    padding-bottom: 5%;
+    font-size: 3rem;
 }
 
 .container .board {
-  width: 50%;
-  margin: 0 2% 0 2%;
-  display: flex;
-  flex-direction: column;
+    width: 50%;
+    margin: 0 2% 0 2%;
+    display: flex;
+    flex-direction: column;
 }
 
 .container .board .title {
-  background-color: var(--red-salsa);
-  margin-bottom: 1%;
-  margin-top: 1%;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.8rem;
-  width: 40%;
-  align-self: center;
-  min-height: 5%;
+    background-color: var(--red-salsa);
+    margin-bottom: 1%;
+    margin-top: 1%;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.8rem;
+    width: 40%;
+    align-self: center;
+    min-height: 5%;
 }
 
 .container .board .grid {
-  align-self: center;
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  /* background-color: white; */
-  width: 80%;
+    align-self: center;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    /* background-color: white; */
+    width: 80%;
 }
 
 .container .board .block {
-  background-color: var(--blue-jeans);
-  aspect-ratio: 1;
-  border: 2px solid black;
-  border-radius: 5px;
+    background-color: var(--blue-jeans);
+    aspect-ratio: 1;
+    border: 2px solid black;
+    border-radius: 5px;
 }
 
 .container .board .block:hover {
-  background-color: rgba(53, 167, 255, 0.76);
+    background-color: rgba(53, 167, 255, 0.76);
 }
 
 .container .board .ship-yard {
-  width: 80%;
-  align-self: center;
-  margin-top: 3%;
-  display: flex;
-  flex-wrap: wrap;
+    width: 80%;
+    align-self: center;
+    margin-top: 3%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .container .board .ship-yard .ship {
-  flex: 0 0 auto;
-  display: flex;
-  margin-left: 3%;
-  margin-top: 2%;
+    flex: 0 0 auto;
+    display: flex;
+    margin-left: 3%;
+    margin-top: 2%;
 }
 
 .container .board .ship-yard .ship .ship-block {
-  background-color: var(--block-color);
-  aspect-ratio: 1;
-  flex: 0 0 auto;
-  border: 2px solid black;
+    background-color: var(--block-color);
+    aspect-ratio: 1;
+    flex: 0 0 auto;
+    border: 2px solid black;
 }
 
 .ship-block-in-grid {
-  /* background-color: yellow !important;
+    /* background-color: yellow !important;
   border: 2px solid yellow !important;  */
-  border-radius: 0 !important;
-  background-color: var(--block-color) !important;
-  aspect-ratio: 1;
-  flex: 0 0 auto;
-  border: 2px solid black !important;
+    border-radius: 0 !important;
+    background-color: var(--block-color) !important;
+    aspect-ratio: 1;
+    flex: 0 0 auto;
+    border: 2px solid black !important;
 }
 
-[draggable="true"] {
-  cursor: move;
+[draggable='true'] {
+    cursor: move;
 }
 
-.grid[data-id="1"] .block[shipNumber="1"]:last-of-type {
-  background-color: black !important;
+.grid[data-id='1'] .block[shipNumber='1']:last-of-type {
+    background-color: black !important;
 }
 
 .attacked-ship {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 200%;
-  background-color: black !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 200%;
+    background-color: black !important;
 }
 
 .bad-attack {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 200%;
-  background-color: black !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 200%;
+    background-color: black !important;
 }
 
 .ai-ship {
-  background-color: var(--blue-jeans) !important;
+    background-color: var(--blue-jeans) !important;
 }
-

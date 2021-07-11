@@ -1,8 +1,9 @@
 export default class Ship {
-  constructor(length) {
+  constructor(length, orientation = "horizontal") {
     if (length <= 0) throw new Error("Invalid length of ship");
     this.length = length;
     this.hitIndices = [];
+    this.orientation = orientation; 
   }
 
   hit(index) {

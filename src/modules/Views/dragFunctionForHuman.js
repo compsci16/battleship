@@ -13,6 +13,7 @@ export default function letHumanDragShips(boardHuman) {
 }
 
 function handleDragStart(e) {
+  e.preventDefault();
   this.style.opacity = "0.4";
   draggedShip = e.target;
   if (!draggedShip.matches(".ship")) return;
@@ -29,8 +30,8 @@ function handleDragEnd(e, boardHuman) {
   // if it's a block in the right grid
   if (elem[0].matches(`.grid[data-id = '1'] .block`)) {
     const block = elem[0];
-    const row = block.getAttribute("data-row");
-    const column = block.getAttribute("data-column");
+    const [row, column] = getUICoords(block);
+
     const startingBlock = document.querySelector(
       `.grid[data-id = '1'] .block[data-row = '${row}'][data-column = '${
         column - shipBlockNumberDragged + 1
@@ -40,10 +41,10 @@ function handleDragEnd(e, boardHuman) {
       restoreOpacity(e);
       return;
     }
-    const x = startingBlock.getAttribute("data-row");
-    const y = startingBlock.getAttribute("data-column");
 
+    const [x, y] = getUICoords(startingBlock);
     const ship = new Ship(draggedShipLength);
+
     try {
       boardHuman.placeShip(ship, x - 1, y - 1); // x-1,y-1 because UI: 1,2,... -> logic:0,1,...\
       ++Application.shipsOfGrid1;
@@ -68,4 +69,10 @@ function paintShipOnGrid(index) {
 
 function restoreOpacity(e) {
   e.target.style.opacity = 1;
+}
+
+function getUICoords(block) {
+  const x = block.getAttribute("data-row");
+  const y = block.getAttribute("data-column");
+  return [x, y];
 }
