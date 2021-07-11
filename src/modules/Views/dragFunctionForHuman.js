@@ -1,7 +1,10 @@
 import Ship from '../Models/Ship';
 import Application from '../Controllers/Application';
 
-let draggedShip, draggedShipLength, shipBlockNumberDragged;
+let draggedShip,
+    draggedShipLength,
+    shipBlockNumberDragged,
+    draggedShipDirection;
 
 export default function letHumanDragShips(boardHuman) {
     document
@@ -20,20 +23,14 @@ function handleDragStart(e) {
     if (!draggedShip.matches('.ship')) return;
     draggedShipLength = draggedShip.childElementCount;
     const rect = draggedShip.getBoundingClientRect();
-
-    const direction = window.getComputedStyle(draggedShip).flexDirection;
-    console.log('rect (width, height)', rect.width, rect.height);
-
-    console.log('offsets (x,y)', e.offsetX, e.offsetY);
-    if (direction === 'row') {
+    draggedShipDirection = window.getComputedStyle(draggedShip).flexDirection;
+    if (draggedShipDirection === 'row') {
         const blockWidth = rect.width / draggedShipLength;
         shipBlockNumberDragged = Math.floor(e.offsetX / blockWidth + 1);
-    } else if (direction === 'column') {
+    } else if (draggedShipDirection === 'column') {
         const blockWidth = rect.height / draggedShipLength;
         shipBlockNumberDragged = Math.floor(e.offsetY / blockWidth + 1);
     }
-
-    console.log(shipBlockNumberDragged);
 }
 
 function handleDragEnd(e, boardHuman) {
@@ -44,15 +41,20 @@ function handleDragEnd(e, boardHuman) {
     if (elem[0].matches(`.grid[data-id = '1'] .block`)) {
         const block = elem[0];
         const [row, column] = getUICoords(block);
-        const direction = window.getComputedStyle(draggedShip).flexDirection;
-        const startingBlock = getStartingBlock(row, column, direction);
+        const startingBlock = getStartingBlock(
+            row,
+            column,
+            draggedShipDirection
+        );
         console.log(startingBlock);
         if (!startingBlock) {
             restoreOpacity(e);
             return;
         }
         const [x, y] = getUICoords(startingBlock);
-        const orientation = flexDirectionToOrientation(direction);
+        const orientation =
+            draggedShipDirection === 'row' ? 'horizontal' : 'vertical';
+
         const ship = new Ship(draggedShipLength, orientation);
         try {
             boardHuman.placeShip(ship, x - 1, y - 1); // x-1,y-1 because UI: 1,2,... -> logic:0,1,...\
@@ -115,10 +117,4 @@ function getUICoords(block) {
     const x = block.getAttribute('data-row');
     const y = block.getAttribute('data-column');
     return [x, y];
-}
-
-function flexDirectionToOrientation(direction) {
-    if (direction === 'row') return 'horizontal';
-    else if (direction === 'column') return 'vertical';
-    else throw new Error('wrong flex direction');
 }
