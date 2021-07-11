@@ -80,10 +80,11 @@ body {
     margin-top: 3%;
     display: flex;
     flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .container .board .ship-yard .ship {
-    flex: 0 0 auto;
+    flex: 0 0 0;
     display: flex;
     margin-left: 3%;
     margin-top: 2%;

@@ -20,8 +20,20 @@ function handleDragStart(e) {
     if (!draggedShip.matches('.ship')) return;
     draggedShipLength = draggedShip.childElementCount;
     const rect = draggedShip.getBoundingClientRect();
-    const blockWidth = rect.width / draggedShipLength;
-    shipBlockNumberDragged = Math.floor(e.offsetX / blockWidth + 1);
+
+    const direction = window.getComputedStyle(draggedShip).flexDirection;
+    console.log('rect (width, height)', rect.width, rect.height);
+
+    console.log('offsets (x,y)', e.offsetX, e.offsetY);
+    if (direction === 'row') {
+        const blockWidth = rect.width / draggedShipLength;
+        shipBlockNumberDragged = Math.floor(e.offsetX / blockWidth + 1);
+    } else if (direction === 'column') {
+        const blockWidth = rect.height / draggedShipLength;
+        shipBlockNumberDragged = Math.floor(e.offsetY / blockWidth + 1);
+    }
+
+    console.log(shipBlockNumberDragged);
 }
 
 function handleDragEnd(e, boardHuman) {
@@ -32,22 +44,22 @@ function handleDragEnd(e, boardHuman) {
     if (elem[0].matches(`.grid[data-id = '1'] .block`)) {
         const block = elem[0];
         const [row, column] = getUICoords(block);
-        const startingBlock = document.querySelector(
-            `.grid[data-id = '1'] .block[data-row = '${row}'][data-column = '${
-                column - shipBlockNumberDragged + 1
-            }']`
-        );
+        const direction = window.getComputedStyle(draggedShip).flexDirection;
+        const startingBlock = getStartingBlock(row, column, direction);
+        console.log(startingBlock);
         if (!startingBlock) {
             restoreOpacity(e);
             return;
         }
         const [x, y] = getUICoords(startingBlock);
-        const ship = new Ship(draggedShipLength);
+        const orientation = flexDirectionToOrientation(direction);
+        const ship = new Ship(draggedShipLength, orientation);
         try {
             boardHuman.placeShip(ship, x - 1, y - 1); // x-1,y-1 because UI: 1,2,... -> logic:0,1,...\
             ++Application.shipsOfGrid1;
             paintShipOnGrid(
-                parseInt(startingBlock.getAttribute('data-number'))
+                parseInt(startingBlock.getAttribute('data-number')),
+                orientation
             );
             draggedShip.style.display = 'none';
             return;
@@ -58,12 +70,40 @@ function handleDragEnd(e, boardHuman) {
     } else restoreOpacity(e);
 }
 
-function paintShipOnGrid(index) {
-    for (let i = 0; i < draggedShipLength; i++) {
-        const currentBlock = document.querySelector(
-            `.grid[data-id = '1'] .block[data-number = '${index++}']`
+function getStartingBlock(row, column, direction) {
+    if (direction === 'row')
+        return document.querySelector(
+            `.grid[data-id = '1'] .block[data-row = '${row}'][data-column = '${
+                column - shipBlockNumberDragged + 1
+            }']`
         );
-        currentBlock.classList.add('ship-block-in-grid');
+    else if (direction === 'column') {
+        return document.querySelector(
+            `.grid[data-id = '1'] .block[data-row = '${
+                row - shipBlockNumberDragged + 1
+            }'][data-column = '${column}']`
+        );
+    } else {
+        throw new Error('No direction specified');
+    }
+}
+
+function paintShipOnGrid(index, orientation) {
+    if (orientation === 'horizontal')
+        for (let i = 0; i < draggedShipLength; i++) {
+            const currentBlock = document.querySelector(
+                `.grid[data-id = '1'] .block[data-number = '${index++}']`
+            );
+            currentBlock.classList.add('ship-block-in-grid');
+        }
+    else if (orientation === 'vertical') {
+        for (let i = 0; i < draggedShipLength; i++) {
+            const currentBlock = document.querySelector(
+                `.grid[data-id = '1'] .block[data-number = '${index}']`
+            );
+            currentBlock.classList.add('ship-block-in-grid');
+            index += 10;
+        }
     }
 }
 
@@ -75,4 +115,10 @@ function getUICoords(block) {
     const x = block.getAttribute('data-row');
     const y = block.getAttribute('data-column');
     return [x, y];
+}
+
+function flexDirectionToOrientation(direction) {
+    if (direction === 'row') return 'horizontal';
+    else if (direction === 'column') return 'vertical';
+    else throw new Error('wrong flex direction');
 }
