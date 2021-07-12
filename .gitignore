@@ -2,3 +2,6 @@ package-lock.json
 node_modules/
 dist
 sandbox.js
+src/modules/Models/SmartAI.js
+src/modules/Models/SmartestAI.js
+src/modules/Models/SmartestAI2.js
