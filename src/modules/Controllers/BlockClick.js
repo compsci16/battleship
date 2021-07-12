@@ -37,12 +37,12 @@ function isValidPlayerClick(gridNumber) {
 
 function gridBlockClickHandler(gridBlock) {
   gridBlock.classList.add("bad-attack");
-  gridBlock.innerHTML = `❌`;
+  gridBlock.textContent = `❌`;
 }
 
 function shipBlockClickHandler(shipBlock) {
   shipBlock.classList.add("attacked-ship");
-  shipBlock.innerHTML = `💥`;
+  shipBlock.textContent = `💥`;
 }
 
 function getBlockCoords(block) {
