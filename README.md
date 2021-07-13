@@ -1,4 +1,4 @@
-#Battleship project 
+# Battleship project 
 [Live Demo](https://wintstack.github.io/battleship/)
 - developed for the Odin Curriculum
 
