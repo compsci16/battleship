@@ -1,5 +1,6 @@
 import Application from '../Controllers/Application';
 
+
 // Add 10*10 blocks to the grid
 function displayGrids() {
     Array.from(document.querySelectorAll('.container .board .grid')).map(
@@ -18,6 +19,15 @@ function displayGrids() {
 
 function displayShips(lengths) {
     lengths.forEach((len) => addShiptoUI(len));
+}
+
+function modifyShipWidth() {
+    console.log('resizing ship');
+    document.querySelectorAll('.ship-block').forEach((shipBlock) => {
+        shipBlock.style.width = `${
+            document.querySelector('.grid .block').offsetWidth
+        }px`;
+    });
 }
 
 // Create rectangular blocks to represent ships
@@ -42,5 +52,6 @@ function addShiptoUI(length) {
 
 export default function displayGameInterface() {
     displayGrids();
-    //displayShips(Application.lengthsOfShips);
+    displayShips(Application.lengthsOfShips);
+    window.onresize = modifyShipWidth;
 }

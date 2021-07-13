@@ -2,8 +2,11 @@
     --primary-1: #00171f;
     --primary-2: #ffffff;
     --secondary-1: #003459;
-    --accent-1: #3F6C51;
+    --accent-1: #3f6c51;
     --accent-2: #00a8e8;
+    /* --accent-3: #17bebb; */
+    /* --accent-3: #0288E8; */
+    --accent-3: brown;
 }
 
 .container {
@@ -16,7 +19,7 @@
     display: flex;
 }
 
-.container .game-title span{
+.container .game-title span {
     display: block;
     border: 1rem solid transparent;
     border-left: 2rem solid transparent;
@@ -26,14 +29,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3vh; 
+    gap: 3vh;
+    position: relative;
 }
 .container .board .title {
-    background-color: var(--accent-1);
+    background-color: var(--secondary-1);
     text-align: center;
     width: 70%;
-    border-radius: 5px; 
-    font-size: 2em; 
+    border-radius: 5px;
+    font-size: 2em;
     flex: 0 0 3vh;
     display: flex;
     justify-content: center;
@@ -52,7 +56,6 @@
     border-radius: 5px;
 }
 
-
 .container .board .block {
     background-color: var(--accent-2);
     aspect-ratio: 1;
@@ -62,5 +65,69 @@
 }
 
 .container .board .block:hover {
-    background-color:#0034599c;
+    background-color: #0034599c;
+}
+
+.ship-yard-widget {
+    align-self: center;
+}
+
+.container .board .ship-yard {
+    width: 70%;
+    align-self: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.container .board .ship-yard .ship-yard-title {
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    transform: rotate(270deg);
+}
+
+.container .board .ship-yard .ship {
+    display: flex;
+}
+
+.container .board .ship-yard .ship .ship-block {
+    /* background-color: var(--block-color); */
+    aspect-ratio: 1;
+    flex: 0 0 auto;
+    background-color: var(--accent-3);
+    aspect-ratio: 1;
+    /* border: 1px solid var(--secondary-1); */
+    border-radius: 5px;
+    border: 0.2rem solid var(--primary-1);
+}
+
+.ship-block-in-grid {
+    background-color: var(--accent-3) !important;
+    aspect-ratio: 1;
+    flex: 0 0 auto;
+    /* border: 2px solid black !important; */
+}
+
+.ai-ship {
+    background-color: var(--accent-2) !important;
+}
+
+.attacked-ship {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 300%;
+    background-color: var(--accent-3) !important;
+    /* background-color: black !important; */
+}
+
+.bad-attack {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1000%;
+    color: black;
+    background-color: black !important;
+    /* background-color: black !important; */
 }

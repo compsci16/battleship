@@ -63,7 +63,7 @@ function handleDragEnd(e, boardHuman) {
                 parseInt(startingBlock.getAttribute('data-number')),
                 orientation
             );
-            draggedShip.style.display = 'none';
+            draggedShip.style.visibility = 'hidden';
             return;
         } catch (err) {
             console.log(err.message);
