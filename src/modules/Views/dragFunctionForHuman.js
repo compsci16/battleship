@@ -18,11 +18,15 @@ export default function letHumanDragShips(boardHuman) {
 }
 
 function handleDragStart(e) {
-   e.stopPropagation();
+    e.stopPropagation();
+    draggedShip = e.target;
+    if (!draggedShip.matches('.ship')) {
+        console.log('not matches');
+        return;
+    }
     try {
         this.style.opacity = '0.4';
-        draggedShip = e.target;
-        if (!draggedShip.matches('.ship')) return;
+        
         draggedShipLength = draggedShip.childElementCount;
         const rect = draggedShip.getBoundingClientRect();
         draggedShipDirection =
@@ -41,6 +45,12 @@ function handleDragStart(e) {
 
 function handleDragEnd(e, boardHuman) {
     e.preventDefault();
+    e.stopPropagation();
+    // if (!draggedShip.matches('.ship')) {
+    //     console.log('not matches');
+    //     restoreOpacity(e);
+    //     return;
+    // }
     // on which element does drag end on screen - returns an array with parents included
     try {
         const elem = document.elementsFromPoint(e.clientX, e.clientY);
@@ -58,7 +68,7 @@ function handleDragEnd(e, boardHuman) {
             );
             console.log(startingBlock);
             if (!startingBlock) {
-                console.log("NOT starting block");
+                console.log('NOT starting block');
                 restoreOpacity(e);
                 return;
             }
@@ -125,7 +135,7 @@ function paintShipOnGrid(index, orientation) {
 }
 
 function restoreOpacity(e) {
-    draggedShip.style.opacity = 1;
+    if (draggedShip.matches('.ship')) draggedShip.style.opacity = 1;
 }
 
 function getUICoords(block) {

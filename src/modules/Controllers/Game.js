@@ -7,7 +7,7 @@ import Player from '../Models/Player';
 import updateUIWithAIShips from '../Views/UIforAIShips';
 import AI from '../Models/AI';
 import HuntParityAI from '../Models/HuntParityAI';
-import HuntProbAI  from '../Models/HuntProbAI';
+import HuntProbAI from '../Models/HuntProbAI';
 import setBlockClickListeners from './BlockClick';
 import Application from './Application';
 import letHumanRotateShips from '../Views/rotateShip';
@@ -54,7 +54,19 @@ function whoWon() {
 async function updateGame() {
     if (isGameOver()) {
         console.log('Game Over');
-        console.log(whoWon());
+        const winner = whoWon();
+        let boardNum;
+        let sum = 3; 
+        if (winner === human) boardNum = 1;
+        else boardNum = 2;
+        let title = document.querySelector(
+            `.board[data-id = '${boardNum}'] .title`
+        );
+        title.textContent = 'WINNER FLEET';
+        title = document.querySelector(
+            `.board[data-id = '${sum -boardNum}'] .title`
+        );
+        title.textContent = 'LOSER FLEET';
         cleanup();
     }
     if (Application.currentPlayer === ai) {

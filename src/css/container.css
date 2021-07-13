@@ -6,7 +6,7 @@
     --accent-2: #00a8e8;
     /* --accent-3: #17bebb; */
     /* --accent-3: #0288E8; */
-    --accent-3: brown;
+    --accent-3: rgb(211, 54, 54);
 }
 
 .container {
@@ -17,6 +17,9 @@
     flex: 0 0 100%;
     font-size: 2rem;
     display: flex;
+    background-color: #041016;
+    border-bottom: 2rem transparent solid;
+    border-color: var(--primary-1);
 }
 
 .container .game-title span {
@@ -33,7 +36,8 @@
     position: relative;
 }
 .container .board .title {
-    background-color: var(--secondary-1);
+    /* background-color: var(--secondary-1); */
+    background-color: #cf0808;
     text-align: center;
     width: 70%;
     border-radius: 5px;
@@ -43,6 +47,10 @@
     justify-content: center;
     align-items: center;
     border: 1rem solid transparent;
+}
+
+.board[data-id='2'] .title {
+    background-color: #cf080847;
 }
 
 .container .board .grid {
@@ -120,6 +128,7 @@
 .attacked-ship {
     display: flex;
     justify-content: center;
+    align-items: center;
     /* background-color: var(--accent-3) !important; */
     font-size: 2em;
     background-color: rgba(165, 42, 42, 0.308) !important;
