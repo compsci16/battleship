@@ -42,5 +42,5 @@ function addShiptoUI(length) {
 
 export default function displayGameInterface() {
     displayGrids();
-    displayShips(Application.lengthsOfShips);
+    //displayShips(Application.lengthsOfShips);
 }
