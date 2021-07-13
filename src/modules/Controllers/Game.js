@@ -15,7 +15,9 @@ import { blockClickHandler } from './BlockClick';
 
 const boardHuman = new Gameboard(10);
 const boardAI = new Gameboard(10);
-
+const sleep = (delay) => new Promise(resolve => {
+    setTimeout(resolve, delay);
+  });  
 const human = new Player('human', boardHuman, boardAI);
 const ai = new HuntProbAI('AI', boardAI, boardHuman);
 
@@ -69,8 +71,8 @@ async function updateGame() {
         title.textContent = 'LOSER FLEET';
         cleanup();
     }
+    await(sleep, 500);
     if (Application.currentPlayer === ai) {
-        // await sleep(500); // to make AI's moves noticeable;
         ai.play();
     }
 }
