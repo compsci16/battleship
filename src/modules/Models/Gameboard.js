@@ -91,7 +91,7 @@ export default class Gameboard {
     }
 
     wasSuccessfullAttack(x, y) {
-        if (this.grid[x][y]['ship']) return true;
+        if (this.grid[x][y]['attacked'] && this.grid[x][y]['ship']) return true;
         return false;
     }
 

@@ -7,6 +7,7 @@ import Player from '../Models/Player';
 import updateUIWithAIShips from '../Views/UIforAIShips';
 import AI from '../Models/AI';
 import HuntParityAI from '../Models/HuntParityAI';
+import HuntProbAI  from '../Models/HuntProbAI';
 import setBlockClickListeners from './BlockClick';
 import Application from './Application';
 import letHumanRotateShips from '../Views/rotateShip';
@@ -16,7 +17,7 @@ const boardHuman = new Gameboard(10);
 const boardAI = new Gameboard(10);
 
 const human = new Player('human', boardHuman, boardAI);
-const ai = new HuntParityAI('AI', boardAI, boardHuman);
+const ai = new HuntProbAI('AI', boardAI, boardHuman);
 
 async function setup() {
     console.log('Setup');

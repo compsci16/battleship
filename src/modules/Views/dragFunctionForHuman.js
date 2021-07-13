@@ -18,58 +18,73 @@ export default function letHumanDragShips(boardHuman) {
 }
 
 function handleDragStart(e) {
-    this.style.opacity = '0.4';
-    draggedShip = e.target;
-    if (!draggedShip.matches('.ship')) return;
-    draggedShipLength = draggedShip.childElementCount;
-    const rect = draggedShip.getBoundingClientRect();
-    draggedShipDirection = window.getComputedStyle(draggedShip).flexDirection;
-    if (draggedShipDirection === 'row') {
-        const blockWidth = rect.width / draggedShipLength;
-        shipBlockNumberDragged = Math.floor(e.offsetX / blockWidth + 1);
-    } else if (draggedShipDirection === 'column') {
-        const blockHeight = rect.height / draggedShipLength;
-        shipBlockNumberDragged = Math.floor(e.offsetY / blockHeight + 1);
+   e.stopPropagation();
+    try {
+        this.style.opacity = '0.4';
+        draggedShip = e.target;
+        if (!draggedShip.matches('.ship')) return;
+        draggedShipLength = draggedShip.childElementCount;
+        const rect = draggedShip.getBoundingClientRect();
+        draggedShipDirection =
+            window.getComputedStyle(draggedShip).flexDirection;
+        if (draggedShipDirection === 'row') {
+            const blockWidth = rect.width / draggedShipLength;
+            shipBlockNumberDragged = Math.floor(e.offsetX / blockWidth + 1);
+        } else if (draggedShipDirection === 'column') {
+            const blockHeight = rect.height / draggedShipLength;
+            shipBlockNumberDragged = Math.floor(e.offsetY / blockHeight + 1);
+        }
+    } catch {
+        restoreOpacity(e);
     }
 }
 
 function handleDragEnd(e, boardHuman) {
     e.preventDefault();
     // on which element does drag end on screen - returns an array with parents included
-    const elem = document.elementsFromPoint(e.clientX, e.clientY);
-    // if it's a block in the right grid
-    if (elem[0].matches(`.grid[data-id = '1'] .block`)) {
-        const block = elem[0];
-        const [row, column] = getUICoords(block);
-        const startingBlock = getStartingBlock(
-            row,
-            column,
-            draggedShipDirection
-        );
-        console.log(startingBlock);
-        if (!startingBlock) {
-            restoreOpacity(e);
-            return;
-        }
-        const [x, y] = getUICoords(startingBlock);
-        const orientation =
-            draggedShipDirection === 'row' ? 'horizontal' : 'vertical';
-
-        const ship = new Ship(draggedShipLength, orientation);
-        try {
-            boardHuman.placeShip(ship, x - 1, y - 1); // x-1,y-1 because UI: 1,2,... -> logic:0,1,...\
-            ++Application.shipsOfGrid1;
-            paintShipOnGrid(
-                parseInt(startingBlock.getAttribute('data-number')),
-                orientation
+    try {
+        const elem = document.elementsFromPoint(e.clientX, e.clientY);
+        // if it's a block in the right grid
+        if (
+            elem[0].matches(`.grid[data-id = '1'] .block`) &&
+            draggedShipLength >= 2
+        ) {
+            const block = elem[0];
+            const [row, column] = getUICoords(block);
+            const startingBlock = getStartingBlock(
+                row,
+                column,
+                draggedShipDirection
             );
-            draggedShip.style.visibility = 'hidden';
-            return;
-        } catch (err) {
-            console.log(err.message);
-            restoreOpacity(e);
-        }
-    } else restoreOpacity(e);
+            console.log(startingBlock);
+            if (!startingBlock) {
+                console.log("NOT starting block");
+                restoreOpacity(e);
+                return;
+            }
+            const [x, y] = getUICoords(startingBlock);
+            const orientation =
+                draggedShipDirection === 'row' ? 'horizontal' : 'vertical';
+
+            const ship = new Ship(draggedShipLength, orientation);
+            try {
+                boardHuman.placeShip(ship, x - 1, y - 1); // x-1,y-1 because UI: 1,2,... -> logic:0,1,...\
+                ++Application.shipsOfGrid1;
+                paintShipOnGrid(
+                    parseInt(startingBlock.getAttribute('data-number')),
+                    orientation
+                );
+                draggedShip.style.visibility = 'hidden';
+                return;
+            } catch (err) {
+                console.log(err.message);
+                restoreOpacity(e);
+                return;
+            }
+        } else restoreOpacity(e);
+    } catch {
+        restoreOpacity(e);
+    }
 }
 
 function getStartingBlock(row, column, direction) {
@@ -110,7 +125,7 @@ function paintShipOnGrid(index, orientation) {
 }
 
 function restoreOpacity(e) {
-    e.target.style.opacity = 1;
+    draggedShip.style.opacity = 1;
 }
 
 function getUICoords(block) {
