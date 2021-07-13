@@ -1,6 +1,5 @@
 package-lock.json
 node_modules/
-dist
 sandbox.js
 src/modules/Models/SmartAI.js
 src/modules/Models/SmartestAI.js
