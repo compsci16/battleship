@@ -158,3 +158,77 @@
 .bad-attack:hover {
     pointer-events: none !important;
 }
+
+@media (max-width: 1200px) {
+    /* // rules here apply to devices from 993px to 1200px (inclusive) */
+    .container .board {
+        width: 50%;
+
+    }
+
+    .container .board .grid {
+        width: 90%;
+    }
+
+    .container .board .title {
+        width: 90%;
+    }
+
+    .container .board .ship-yard {
+        width: 90%;
+    }
+}
+@media (max-width: 992px) {
+    /* // rules here apply to devices from 769px to 992px (inclusive) */
+}
+@media (max-width: 768px) {
+    /* // rules here apply to devices from 0px to 768px (inclusive) */
+    .container .board .grid {
+        width: 95%;
+    }
+}
+
+@media (max-width: 576px){
+    .container .board{
+        width: 100%;
+        gap: 0.5rem; 
+    }
+
+    .container .board .title{
+        width: 60%;
+        font-size: 1rem;
+        border: none; 
+        
+    }
+    .container .board .grid{
+        width: 60%; 
+    }
+
+    .container .board .ship-yard{
+        width: 60%; 
+        border-bottom: 1rem solid transparent; 
+    }
+}
+
+
+@media (max-width: 440px){
+    .container .board{
+        width: 100%;
+        gap: 0.5rem; 
+    }
+
+    .container .board .title{
+        width: 76%;
+        font-size: 1rem;
+        border: none; 
+        
+    }
+    .container .board .grid{
+        width: 76%; 
+    }
+
+    .container .board .ship-yard{
+        width: 76%; 
+        border-bottom: 1rem solid transparent; 
+    }
+}
