@@ -23,7 +23,7 @@ function displayShips(lengths) {
 
 function modifyShipWidth() {
     console.log('resizing ship');
-    document.querySelectorAll('.ship-block').forEach((shipBlock) => {
+    document.querySelectorAll('.container .board .ship-yard .ship-block').forEach((shipBlock) => {
         shipBlock.style.width = `${
             document.querySelector('.grid .block').offsetWidth
         }px`;

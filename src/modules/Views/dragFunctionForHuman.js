@@ -26,7 +26,7 @@ function handleDragStart(e) {
     }
     try {
         this.style.opacity = '0.4';
-        
+
         draggedShipLength = draggedShip.childElementCount;
         const rect = draggedShip.getBoundingClientRect();
         draggedShipDirection =
@@ -84,7 +84,13 @@ function handleDragEnd(e, boardHuman) {
                     parseInt(startingBlock.getAttribute('data-number')),
                     orientation
                 );
-                draggedShip.style.visibility = 'hidden';
+                const width =
+                    window.innerWidth ||
+                    document.documentElement.clientWidth ||
+                    document.body.clientWidth;
+                console.log(width);
+                if (width > 576) draggedShip.style.visibility = 'hidden';
+                else draggedShip.style.display = 'none';
                 return;
             } catch (err) {
                 console.log(err.message);
