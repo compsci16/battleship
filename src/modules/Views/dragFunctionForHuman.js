@@ -6,6 +6,14 @@ let draggedShip,
     shipBlockNumberDragged,
     draggedShipDirection;
 
+let clientX, clientY;
+// Firefox doesn't recognize clienX and clientY in dragend event so use this hack
+document.addEventListener('dragover', (event) => {
+    event = event || window.event;
+    clientX = event.clientX;
+    clientY = event.clientY;
+});
+
 export default function letHumanDragShips(boardHuman) {
     document
         .querySelectorAll(".ship-yard[data-id = '1'] .ship")
@@ -20,9 +28,10 @@ export default function letHumanDragShips(boardHuman) {
 function handleDragStart(e) {
     e.stopPropagation();
     draggedShip = e.target;
-    e.dataTransfer.setData('text', '');
-    console.log('set data on drag start required by firefox');
+    e.dataTransfer.setData('text/plain', '');
+    console.log('handle drag start'); // required by firefox
     if (!draggedShip.matches('.ship')) {
+        console.log(draggedShip);
         console.log('not matches');
         return;
     }
@@ -48,19 +57,27 @@ function handleDragStart(e) {
 function handleDragEnd(e, boardHuman) {
     e.preventDefault();
     e.stopPropagation();
-    // if (!draggedShip.matches('.ship')) {
-    //     console.log('not matches');
-    //     restoreOpacity(e);
-    //     return;
-    // }
-    // on which element does drag end on screen - returns an array with parents included
+    if (!draggedShip.matches('.ship')) {
+        console.log('not matches');
+        return;
+    }
+    console.log('in drag end');
+    domManipulation(e, boardHuman);
+    console.log('in drag end after dom');
+}
+
+function domManipulation(e, boardHuman) {
     try {
-        const elem = document.elementsFromPoint(e.clientX, e.clientY);
+        console.log('in dom man');
+        const elem = document.elementsFromPoint(clientX, clientY);
+        console.log(elem[0]);
+        console.log(draggedShip);
         // if it's a block in the right grid
         if (
             elem[0].matches(`.grid[data-id = '1'] .block`) &&
             draggedShipLength >= 2
         ) {
+            console.log('matches block of grid 1');
             const block = elem[0];
             const [row, column] = getUICoords(block);
             const startingBlock = getStartingBlock(
@@ -78,7 +95,30 @@ function handleDragEnd(e, boardHuman) {
             const orientation =
                 draggedShipDirection === 'row' ? 'horizontal' : 'vertical';
 
-        } else restoreOpacity(e);
+            const ship = new Ship(draggedShipLength, orientation);
+            try {
+                boardHuman.placeShip(ship, x - 1, y - 1); // x-1,y-1 because UI: 1,2,... -> logic:0,1,...\
+                ++Application.shipsOfGrid1;
+                paintShipOnGrid(
+                    parseInt(startingBlock.getAttribute('data-number')),
+                    orientation
+                );
+                const width =
+                    window.innerWidth ||
+                    document.documentElement.clientWidth ||
+                    document.body.clientWidth;
+                console.log(width);
+                if (width > 576) draggedShip.style.visibility = 'hidden';
+                else draggedShip.style.display = 'none';
+                return;
+            } catch (err) {
+                console.log(err.message);
+                restoreOpacity(e);
+                return;
+            }
+        } else {
+            console.log('in else of drag fail');
+            restoreOpacity(e)};
     } catch {
         restoreOpacity(e);
     }
@@ -122,7 +162,9 @@ function paintShipOnGrid(index, orientation) {
 }
 
 function restoreOpacity(e) {
-    if (draggedShip.matches('.ship')) draggedShip.style.opacity = 1;
+    console.log('in restore opacity');
+    console.log(draggedShip);
+    draggedShip.style.opacity = 1;
 }
 
 function getUICoords(block) {

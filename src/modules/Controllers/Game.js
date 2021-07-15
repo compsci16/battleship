@@ -5,8 +5,6 @@ import displayGameInterface from '../Views/UI';
 import areAllShipsPlaced from '../Views/checkNumberOfShipsOfHuman';
 import Player from '../Models/Player';
 import updateUIWithAIShips from '../Views/UIforAIShips';
-import AI from '../Models/AI';
-import HuntParityAI from '../Models/HuntParityAI';
 import HuntProbAI from '../Models/HuntProbAI';
 import setBlockClickListeners from './BlockClick';
 import Application from './Application';
@@ -64,11 +62,11 @@ async function updateGame() {
         let title = document.querySelector(
             `.board[data-id = '${boardNum}'] .title`
         );
-        title.textContent = 'WINNER FLEET';
+        title.textContent = '💥 💥 💥 WINNER FLEET 💥 💥 💥';
         title = document.querySelector(
             `.board[data-id = '${sum -boardNum}'] .title`
         );
-        title.textContent = 'LOSER FLEET';
+        title.textContent = '☠️ ☠️ ☠️ LOSER FLEET ☠️ ☠️ ☠️';
         cleanup();
     }
     await(sleep, 500);

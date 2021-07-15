@@ -5,12 +5,14 @@ import Application from '../Controllers/Application';
 function displayGrids() {
     Array.from(document.querySelectorAll('.container .board .grid')).map(
         (grid) => {
+            grid.setAttribute('draggable', false); 
             for (let i = 0; i < 100; i++) {
                 const block = document.createElement('div');
                 block.classList.add('block');
                 block.setAttribute('data-column', (i % 10) + 1);
                 block.setAttribute('data-number', i + 1);
                 block.setAttribute('data-row', Math.floor(i / 10 + 1));
+                block.setAttribute('draggable', false); 
                 grid.appendChild(block);
             }
         }
