@@ -7,7 +7,7 @@ let draggedShip,
     draggedShipDirection;
 
 let clientX, clientY;
-
+// Firefox doesn't recognize clienX and clientY in dragend event so use this hack
 document.addEventListener('dragover', (event) => {
     event = event || window.event;
     clientX = event.clientX;
@@ -31,6 +31,7 @@ function handleDragStart(e) {
     e.dataTransfer.setData('text/plain', '');
     console.log('handle drag start'); // required by firefox
     if (!draggedShip.matches('.ship')) {
+        console.log(draggedShip);
         console.log('not matches');
         return;
     }
