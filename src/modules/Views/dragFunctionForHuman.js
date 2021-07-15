@@ -20,6 +20,8 @@ export default function letHumanDragShips(boardHuman) {
 function handleDragStart(e) {
     e.stopPropagation();
     draggedShip = e.target;
+    e.dataTransfer.setData('text', '');
+    console.log('set data on drag start required by firefox');
     if (!draggedShip.matches('.ship')) {
         console.log('not matches');
         return;
@@ -76,27 +78,6 @@ function handleDragEnd(e, boardHuman) {
             const orientation =
                 draggedShipDirection === 'row' ? 'horizontal' : 'vertical';
 
-            const ship = new Ship(draggedShipLength, orientation);
-            try {
-                boardHuman.placeShip(ship, x - 1, y - 1); // x-1,y-1 because UI: 1,2,... -> logic:0,1,...\
-                ++Application.shipsOfGrid1;
-                paintShipOnGrid(
-                    parseInt(startingBlock.getAttribute('data-number')),
-                    orientation
-                );
-                const width =
-                    window.innerWidth ||
-                    document.documentElement.clientWidth ||
-                    document.body.clientWidth;
-                console.log(width);
-                if (width > 576) draggedShip.style.visibility = 'hidden';
-                else draggedShip.style.display = 'none';
-                return;
-            } catch (err) {
-                console.log(err.message);
-                restoreOpacity(e);
-                return;
-            }
         } else restoreOpacity(e);
     } catch {
         restoreOpacity(e);

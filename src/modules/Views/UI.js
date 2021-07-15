@@ -44,6 +44,7 @@ function addShiptoUI(length) {
             block.style.width = `${
                 document.querySelector('.grid .block').offsetWidth
             }px`;
+            block.setAttribute('draggable', false); 
             ship.appendChild(block);
         }
         shipYard.appendChild(ship);
