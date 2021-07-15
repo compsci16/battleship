@@ -6,6 +6,14 @@ let draggedShip,
     shipBlockNumberDragged,
     draggedShipDirection;
 
+let clientX, clientY;
+
+document.addEventListener('dragover', (event) => {
+    event = event || window.event;
+    clientX = event.clientX;
+    clientY = event.clientY;
+});
+
 export default function letHumanDragShips(boardHuman) {
     document
         .querySelectorAll(".ship-yard[data-id = '1'] .ship")
@@ -20,6 +28,8 @@ export default function letHumanDragShips(boardHuman) {
 function handleDragStart(e) {
     e.stopPropagation();
     draggedShip = e.target;
+    e.dataTransfer.setData('text/plain', '');
+    console.log('handle drag start'); // required by firefox
     if (!draggedShip.matches('.ship')) {
         console.log('not matches');
         return;
@@ -46,19 +56,27 @@ function handleDragStart(e) {
 function handleDragEnd(e, boardHuman) {
     e.preventDefault();
     e.stopPropagation();
-    // if (!draggedShip.matches('.ship')) {
-    //     console.log('not matches');
-    //     restoreOpacity(e);
-    //     return;
-    // }
-    // on which element does drag end on screen - returns an array with parents included
+    if (!draggedShip.matches('.ship')) {
+        console.log('not matches');
+        return;
+    }
+    console.log('in drag end');
+    domManipulation(e, boardHuman);
+    console.log('in drag end after dom');
+}
+
+function domManipulation(e, boardHuman) {
     try {
-        const elem = document.elementsFromPoint(e.clientX, e.clientY);
+        console.log('in dom man');
+        const elem = document.elementsFromPoint(clientX, clientY);
+        console.log(elem[0]);
+        console.log(draggedShip);
         // if it's a block in the right grid
         if (
             elem[0].matches(`.grid[data-id = '1'] .block`) &&
             draggedShipLength >= 2
         ) {
+            console.log('matches block of grid 1');
             const block = elem[0];
             const [row, column] = getUICoords(block);
             const startingBlock = getStartingBlock(
@@ -97,7 +115,9 @@ function handleDragEnd(e, boardHuman) {
                 restoreOpacity(e);
                 return;
             }
-        } else restoreOpacity(e);
+        } else {
+            console.log('in else of drag fail');
+            restoreOpacity(e)};
     } catch {
         restoreOpacity(e);
     }
@@ -141,7 +161,9 @@ function paintShipOnGrid(index, orientation) {
 }
 
 function restoreOpacity(e) {
-    if (draggedShip.matches('.ship')) draggedShip.style.opacity = 1;
+    console.log('in restore opacity');
+    console.log(draggedShip);
+    draggedShip.style.opacity = 1;
 }
 
 function getUICoords(block) {
